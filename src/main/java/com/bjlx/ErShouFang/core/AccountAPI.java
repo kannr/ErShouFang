@@ -130,7 +130,7 @@ public class AccountAPI {
 	 * @return 令牌
 	 * @throws Exception 运行时异常
 	 */
-    public static String checkValidationCode(String tel, String code) throws Exception {
+    public static boolean checkValidationCode(String tel, String code) throws Exception {
 		Query<ValidationCode> query = ds.createQuery(ValidationCode.class);
 
 		long currentTime = System.currentTimeMillis();
@@ -150,20 +150,31 @@ public class AccountAPI {
 				// 验证错误次数增加一次
 				ops.inc(ValidationCode.fd_failCnt);
 				ds.updateFirst(query, ops);
-				return ErShouFangResult.getResult(ErrorCode.VALIDATION_FAIL_1002);
+				return false;
 			} else {
 				// 将验证码设置为已使用
 				ops.set(ValidationCode.fd_used, true);
 				ds.updateFirst(query, ops);
-
-				ObjectNode result = mapper.createObjectNode();
-				return ErShouFangResult.ok(result);
+				return true;
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
     }
+
+
+	/**
+	 * 添加用户联系信息
+	 * @param name 用户姓名
+	 * @param weixin 微信号
+	 * @param tel 手机号
+	 * @return 结果信息
+	 * @throws Exception 异常
+	 */
+	public static String addContact(String name, String weixin, String tel) throws Exception {
+		return null;
+	}
 
 	/**
 	 * 第三方登录

@@ -9,8 +9,7 @@ package com.bjlx.ErShouFang.requestmodel;
 public class ValidationCodeReq {
 
     /**
-     * 登录账户
-     * 可能是手机号，邮箱号
+     * 手机号
      */
     private String tel;
 

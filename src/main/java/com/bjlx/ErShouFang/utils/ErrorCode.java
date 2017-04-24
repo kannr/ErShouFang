@@ -40,76 +40,90 @@ public enum ErrorCode {
  	 */
 
 	// 发送验证码
-	TEL_NULL_1001(100101, "参数账户为空"),
-	TEL_FORMAT_1001(100102, "账户格式不正确"),
+	TEL_NULL_1001(100101, "参数手机号为空"),
+	TEL_FORMAT_1001(100102, "手机号格式不正确"),
 	ACTION_NULL_1001(100103, "参数action为空"),
 	ACTION_LIMIT_1001(100104, "参数action的值不合法"),
 	TIME_LIMIT_1001(100105, "请求过于频繁，请稍后再试"),
 	REQUEST_TOO_MANY_1001(100106, "请求次数过多"),
 
-	// 检验验证码
-	TEL_NULL_1002(100201, "参数账户为空"),
-	TEL_FORMAT_1002(100202, "账户格式不正确"),
+	// 保存用户联系信息
+	TEL_NULL_1002(100201, "参数手机号为空"),
+	TEL_FORMAT_1002(100202, "手机号格式不正确"),
 	CODE_NULL_1002(100203, "参数验证码为空"),
 	CODE_INVALID_1002(100204, "验证码不合法"),
 	VALIDATION_FAIL_1002(100205, "验证失败"),
+	NAME_NULL_1002(100206, "姓名不可为空"),
+	WEIXIN_NULL_1002(100207, "微信号不可为空"),
 
 	/**
 	 * 注册登录
 	 */
 	// 用户第三方登录
-	PROVIDER_NULL_1005(100501, "参数provider为空"),
-	OAUTHID_NULL_1005(100502, "参数oauthId为空"),
-	TOKEN_NULL_1005(100503, "参数token为空"),
-	CLIENTID_NULL_1005(100504, "参数clientId为空"),
-	PROVIDER_INVALID_1005(100505, "参数provider不合法"),
+	PROVIDER_NULL_1003(100301, "参数provider为空"),
+	OAUTHID_NULL_1003(100302, "参数oauthId为空"),
+	TOKEN_NULL_1003(100303, "参数token为空"),
+	PROVIDER_INVALID_1003(100304, "参数provider不合法"),
 
 	// 登出
-	UNLOGIN_1006(100601, "用户未登录"),
+	UNLOGIN_1004(100401, "用户未登录"),
 
 	/**
 	 * 其他模块
 	 */
 	// 用户反馈
-	CONTENT_NULL_1014(101401, "参数content为空"),
-	UNLOGIN_1014(101402, "用户未登录"),
+	CONTENT_NULL_1005(100501, "参数content为空"),
+	UNLOGIN_1005(100502, "用户未登录"),
+
+	// 邀请好友
 
 
 	/**
 	 * 收藏
 	 */
 	// 添加收藏
-	FAVORITETYPE_NULL_1098(109801, "收藏类型不可为空"),
-	ITEMID_NULL_1098(109802, "收藏对象id不可为空"),
-	TITLE_NULL_1098(109803, "收藏标题不可为空"),
-	UNLOGIN_1098(109804, "用户未登录"),
-	FAVORITETYPE_INVALID_1098(109805, "favoriteType不合法"),
-	ITEMID_INVALID_1098(109806, "itemId不合法"),
+	FAVORITETYPE_NULL_1006(100601, "收藏类型不可为空"),
+	ITEMID_NULL_1006(109802, "收藏对象id不可为空"),
+	TITLE_NULL_1006(109803, "收藏标题不可为空"),
+	UNLOGIN_1006(109804, "用户未登录"),
+	FAVORITETYPE_INVALID_1006(100605, "favoriteType不合法"),
+	ITEMID_INVALID_1006(100606, "itemId不合法"),
 
 	// 取消收藏
-	FAVORITETYPE_NULL_1099(109901, "收藏类型不可为空"),
-	FAVORITETYPE_INVALID_1099(109902, "favoriteType不合法"),
-	UNLOGIN_1099(109903, "用户未登录"),
+	FAVORITETYPE_NULL_1007(100701, "收藏类型不可为空"),
+	FAVORITETYPE_INVALID_1007(100702, "favoriteType不合法"),
+	UNLOGIN_1007(100703, "用户未登录"),
 
 	// 取得收藏列表
-	UNLOGIN_1100(110001, "用户未登录"),
+	UNLOGIN_1008(100801, "用户未登录"),
 
 
 	/**
-	 * 搜索
+	 * 房屋管理
 	 */
-	// 用户搜索
-	QUERY_NULL_1107(110701, "query不可为空"),
-	UNLOGIN_1107(110702, "用户未登录"),
-	QUERY_INVALID_1107(110703, "query不合法"),
-	USER_NOT_EXIST_1107(110704, "用户不存在"),
+	// 新增房源
 
-	// 群组搜索
-	QUERY_NULL_1108(110801, "query不可为空"),
-	UNLOGIN_1108(110802, "用户未登录"),
+	// 审核房源
 
-	// 全站搜索
+	// 编辑房源
+
+	// 房屋列表(带条件)
+
+	// 房屋详情
+
+	// 关键词搜索房屋(只匹配标题)
 	QUERY_NULL_1109(110901, "query不可为空"),
+
+	/**
+	 * 预约
+	 */
+	// 预约看房
+
+	// 卖家确认
+
+	// 预约签合同
+
+	// 看房记录
 
 	;
 

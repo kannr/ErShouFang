@@ -1,8 +1,10 @@
 package com.bjlx.ErShouFang.controller;
 
 import com.bjlx.ErShouFang.core.AccountAPI;
+import com.bjlx.ErShouFang.requestmodel.ContactReq;
 import com.bjlx.ErShouFang.requestmodel.OAuthUserInfoReq;
 import com.bjlx.ErShouFang.requestmodel.ValidationCodeReq;
+import com.bjlx.ErShouFang.utils.CommonUtil;
 import com.bjlx.ErShouFang.utils.Constant;
 import com.bjlx.ErShouFang.utils.ErShouFangResult;
 import com.bjlx.ErShouFang.utils.ErrorCode;
@@ -40,7 +42,7 @@ public class AccountController {
         }
 
         // 检查action的值的合法性
-        if(Constant.BIND_TEL_ACTION != validationCodeReq.getAction().intValue()) {
+        if(Constant.BIND_TEL_ACTION != validationCodeReq.getAction()) {
             return ErShouFangResult.getResult(ErrorCode.ACTION_LIMIT_1001);
         }
 
@@ -61,10 +63,57 @@ public class AccountController {
         }
     }
 
+    /**
+     * 保存用户联系信息, 接口编码1002
+     * @param contactReq 联系信息
+     * @return 合法的令牌
+     */
+    @RequestMapping(value = "/app/contacts", method= RequestMethod.POST, produces = "application/json;charset=utf-8")
+    public @ResponseBody String checkValidationCode(@RequestBody ContactReq contactReq) {
 
+        // 参数校验
+        // tel必须存在
+        if(contactReq.getTel() == null) {
+            return ErShouFangResult.getResult(ErrorCode.TEL_NULL_1002);
+        }
+        // code必须存在
+        if(contactReq.getCode() == null) {
+            return ErShouFangResult.getResult(ErrorCode.CODE_NULL_1002);
+        }
+
+        // 检查验证码是否为六位数字
+        if(!AccountAPI.isCode(contactReq.getCode())) {
+            return ErShouFangResult.getResult(ErrorCode.CODE_INVALID_1002);
+        }
+
+        if(contactReq.getWeixin() == null) {
+            return ErShouFangResult.getResult(ErrorCode.WEIXIN_NULL_1002);
+        }
+
+        if(contactReq.getName() == null) {
+            return ErShouFangResult.getResult(ErrorCode.NAME_NULL_1002);
+        }
+
+        // account必须手机号或者邮箱号
+        if(CommonUtil.isTelLegal(contactReq.getTel())) {
+            try {
+                if(AccountAPI.checkValidationCode(contactReq.getTel(), contactReq.getCode())) {
+                    // 保存用户信息
+                    return AccountAPI.addContact(contactReq.getName(), contactReq.getWeixin(), contactReq.getTel());
+                } else {
+                    return ErShouFangResult.getResult(ErrorCode.CODE_INVALID_1002);
+                }
+            } catch(Exception e1) {
+                return ErShouFangResult.getResult(ErrorCode.SERVER_EXCEPTION);
+            }
+        } else {
+            return ErShouFangResult.getResult(ErrorCode.TEL_FORMAT_1002);
+        }
+
+    }
 
     /**
-     * 第三方登录, 接口编码1005
+     * 第三方登录, 接口编码1003
      * @param oauthUserInfoReq 用户第三方信息
      * @return 用户信息
      */
@@ -72,13 +121,13 @@ public class AccountController {
     public @ResponseBody String oauthLogin(@RequestBody OAuthUserInfoReq oauthUserInfoReq) {
 
         if(oauthUserInfoReq.getProvider() == null) {
-            return ErShouFangResult.getResult(ErrorCode.PROVIDER_NULL_1005);
+            return ErShouFangResult.getResult(ErrorCode.PROVIDER_NULL_1003);
         }
         if(oauthUserInfoReq.getOauthId() == null) {
-            return ErShouFangResult.getResult(ErrorCode.OAUTHID_NULL_1005);
+            return ErShouFangResult.getResult(ErrorCode.OAUTHID_NULL_1003);
         }
         if(oauthUserInfoReq.getToken() == null) {
-            return ErShouFangResult.getResult(ErrorCode.TOKEN_NULL_1005);
+            return ErShouFangResult.getResult(ErrorCode.TOKEN_NULL_1003);
         }
 
         try {
@@ -89,7 +138,7 @@ public class AccountController {
     }
 
     /**
-     * 退出登录, 接口编码1006
+     * 退出登录, 接口编码1004
      * @param oauthId 用户id
      * @param key 不羁旅行令牌
      * @return 结果信息
