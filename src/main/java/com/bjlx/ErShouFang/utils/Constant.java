@@ -11,6 +11,7 @@ public class Constant {
      */
     public final static int BIND_TEL_ACTION = 1;
 
+    public final static String OAUTH_PROVIDER = "wechatSession";
     /**
      * 图片正确
      */

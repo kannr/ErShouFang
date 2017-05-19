@@ -1,8 +1,11 @@
 package com.bjlx.ErShouFang.model.house;
 
+import org.mongodb.morphia.annotations.Embedded;
+
 /**
  * Created by xiaozhi on 2017/4/24.
  */
+@Embedded
 public class BookingTime {
 
     /**

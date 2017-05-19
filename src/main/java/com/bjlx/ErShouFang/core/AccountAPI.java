@@ -1,6 +1,7 @@
 package com.bjlx.ErShouFang.core;
 
 
+import com.bjlx.ErShouFang.core.formatter.account.UserInfoFormatter;
 import com.bjlx.ErShouFang.model.account.Credential;
 import com.bjlx.ErShouFang.model.account.SecretKey;
 import com.bjlx.ErShouFang.model.account.UserInfo;
@@ -11,7 +12,6 @@ import com.bjlx.ErShouFang.utils.MorphiaFactory;
 import com.bjlx.ErShouFang.utils.SmsSendUtil;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.query.UpdateOperations;
@@ -177,6 +177,33 @@ public class AccountAPI {
 	}
 
 	/**
+	 * 取得数字或者大写字母
+	 * @return 数字或者大写字母的字符
+	 */
+	private static char getChar() {
+		int r =  (int)(Math.random() * 36);
+		int asciiCode = 0;
+		if (r < 10)
+			asciiCode = r + 48;
+		else
+			asciiCode = r - 10 + 65;
+		return (char)asciiCode;
+	}
+
+	/**
+	 * 取得邀请码
+	 * @param length 邀请码长度
+	 * @return 邀请码
+	 */
+	private static String getPromotionCode(int length) {
+		StringBuilder sb = new StringBuilder();
+		for(int i = 0; i < length; i++) {
+			sb.append(getChar());
+		}
+		return sb.toString();
+	}
+
+	/**
 	 * 第三方登录
 	 * @param provider 第三方平台名称
 	 * @param oauthId 第三方平台的用户id
@@ -185,17 +212,20 @@ public class AccountAPI {
 	 * @param token 第三方平台的用户令牌
 	 * @return 用户信息
 	 */
-	public static String oauthlogin(String provider, String oauthId, String nickName, String avatar, String token) throws Exception {
+	public static String oauthlogin(String provider, String oauthId, String nickName, String avatar, String token, Integer promotionCodeSize) throws Exception {
 		// 查询用户是否存在
 		Query<UserInfo> query = ds.createQuery(UserInfo.class).field(UserInfo.fd_oauthId).equal(oauthId).field(UserInfo.fd_provider).equal(provider);
 
+		int defaultPromotionCodeSize = 8;
 		try {
 			UserInfo userInfo = query.get();
 			if(userInfo == null) {
 				/**
 				 * 创建新用户
  				 */
-				userInfo = new UserInfo(provider, oauthId, nickName, avatar, token);
+				// 生成邀请码
+				String promotionCode = getPromotionCode(promotionCodeSize == null ? defaultPromotionCodeSize : promotionCodeSize);
+				userInfo = new UserInfo(provider, oauthId, nickName, avatar, token, promotionCode);
 				SecretKey secretKey = new SecretKey();
 				Credential credential = new Credential(oauthId, secretKey);
 
@@ -213,7 +243,7 @@ public class AccountAPI {
 				userInfo.setKey(secretKey.getKey());
 			}
 
-			return ErShouFangResult.ok(com.bjlx.ErShouFang.core.formatter.account.UserInfoFormatter.getMapper().valueToTree(userInfo));
+			return ErShouFangResult.ok(UserInfoFormatter.getMapper().valueToTree(userInfo));
 		} catch(Exception e1) {
 			e1.printStackTrace();
 			throw e1;

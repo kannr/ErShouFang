@@ -1,16 +1,19 @@
 package com.bjlx.ErShouFang.utils;
 
-//import java.util.Arrays;
-//import java.util.List;
 
+import com.bjlx.ErShouFang.model.account.Credential;
+import com.bjlx.ErShouFang.model.account.Favorite;
+import com.bjlx.ErShouFang.model.account.UserInfo;
+import com.bjlx.ErShouFang.model.house.Book;
+import com.bjlx.ErShouFang.model.house.House;
+import com.bjlx.ErShouFang.model.misc.Feedback;
+import com.bjlx.ErShouFang.model.misc.ValidationCode;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.ServerAddress;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 import org.slf4j.LoggerFactory;
-
-//import com.mongodb.MongoCredential;
 
 /**
  * 单例实现数据库实例工厂
@@ -48,7 +51,7 @@ public class MorphiaFactory {
     private Morphia getMorphia() {
     	final Morphia morphia = new Morphia();    
     	morphia.map( 
-    			com.bjlx.ErShouFang.model.account.UserInfo.class, com.bjlx.ErShouFang.model.account.Favorite.class);
+    			UserInfo.class, Favorite.class, Credential.class, Book.class, House.class, Feedback.class, ValidationCode.class);
         return morphia;
     }
 
@@ -66,7 +69,7 @@ public class MorphiaFactory {
     	ServerAddress serverAddress;
     	serverAddress = new ServerAddress(host, port);
     	// 数据库名称
-    	String db_name = "QinShihuang";
+    	String db_name = "ErShouFang";
 //    	// 用户名
 //    	String username = "xiaoyao";
 //    	// 密码
@@ -91,7 +94,7 @@ public class MorphiaFactory {
      * @return 数据库实例
      */
     private Datastore getDatastore() {
-    	String db_name = "QinShihuang";
+    	String db_name = "ErShouFang";
     	final Datastore datastore = getMorphia().createDatastore(getClient(), db_name);
     	datastore.ensureIndexes();
     	datastore.ensureCaps();

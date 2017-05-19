@@ -31,6 +31,11 @@ public class OAuthUserInfoReq {
      */
     private String token;
 
+    /**
+     * 邀请码长度
+     */
+    private Integer promotionCodeSize;
+
     public String getProvider() {
         return provider;
     }
@@ -69,5 +74,13 @@ public class OAuthUserInfoReq {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public Integer getPromotionCodeSize() {
+        return promotionCodeSize;
+    }
+
+    public void setPromotionCodeSize(Integer promotionCodeSize) {
+        this.promotionCodeSize = promotionCodeSize;
     }
 }

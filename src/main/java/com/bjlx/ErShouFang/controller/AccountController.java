@@ -130,8 +130,13 @@ public class AccountController {
             return ErShouFangResult.getResult(ErrorCode.TOKEN_NULL_1003);
         }
 
+        if(oauthUserInfoReq.getProvider() != Constant.OAUTH_PROVIDER) {
+            return ErShouFangResult.getResult(ErrorCode.PROVIDER_INVALID_1003);
+        }
+
         try {
-            return AccountAPI.oauthlogin(oauthUserInfoReq.getProvider(), oauthUserInfoReq.getOauthId(), oauthUserInfoReq.getNickName(), oauthUserInfoReq.getAvatar(), oauthUserInfoReq.getToken());
+            return AccountAPI.oauthlogin(oauthUserInfoReq.getProvider(), oauthUserInfoReq.getOauthId(), oauthUserInfoReq.getNickName(),
+                    oauthUserInfoReq.getAvatar(), oauthUserInfoReq.getToken(), oauthUserInfoReq.getPromotionCodeSize());
         } catch (Exception e) {
             return ErShouFangResult.getResult(ErrorCode.SERVER_EXCEPTION);
         }

@@ -52,9 +52,8 @@ public enum ErrorCode {
 	TEL_FORMAT_1002(100202, "手机号格式不正确"),
 	CODE_NULL_1002(100203, "参数验证码为空"),
 	CODE_INVALID_1002(100204, "验证码不合法"),
-	VALIDATION_FAIL_1002(100205, "验证失败"),
-	NAME_NULL_1002(100206, "姓名不可为空"),
-	WEIXIN_NULL_1002(100207, "微信号不可为空"),
+	NAME_NULL_1002(100205, "姓名不可为空"),
+	WEIXIN_NULL_1002(100206, "微信号不可为空"),
 
 	/**
 	 * 注册登录

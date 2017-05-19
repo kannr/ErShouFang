@@ -41,6 +41,8 @@ public class UserInfo {
 	public final static String fd_tel = "tel";
 	@Transient
 	public final static String fd_key = "key";
+	@Transient
+	public final static String fd_number = "number";
 
 	/**
 	 * 主键
@@ -87,9 +89,6 @@ public class UserInfo {
 	 */
 	private Long loginTime;
 
-	@Transient
-	public final static String fd_number = "number";
-
 	/**
 	 * 身份证号码（15位或者18位）
 	 */
@@ -97,14 +96,31 @@ public class UserInfo {
 	@Pattern(regexp = "([\\d]{17}[\\dX]|[\\d]{15})")
 	private String number;
 
+	/**
+	 * 真实姓名
+	 */
 	private String realName;
 
+	/**
+	 * 手机号
+	 */
 	private String tel;
 
+	/**
+	 * 微信号
+	 */
 	private String weixin;
 
+	/**
+	 * 授权码
+	 */
 	@Transient
 	private String key;
+
+	/**
+	 * 邀请码
+	 */
+	private String promotionCode;
 
 	public String getNumber() {
 		return number;
@@ -212,7 +228,7 @@ public class UserInfo {
 
 	public UserInfo() {}
 
-	public UserInfo(String provider, String oauthId, String nickName, String avatar, String token) {
+	public UserInfo(String provider, String oauthId, String nickName, String avatar, String token, String promotionCode) {
 		this.id = new ObjectId();
 		this.provider = provider;
 		this.oauthId = oauthId;
@@ -220,5 +236,6 @@ public class UserInfo {
 		this.avatar = avatar;
 		this.token = token;
 		this.createTime = System.currentTimeMillis();
+		this.promotionCode = promotionCode;
 	}
 }
